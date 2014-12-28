@@ -1,4 +1,6 @@
-Navigation Drawer Layout for Windows Phone 8.0 (ported from amarmesic/windows-phone-navigation-drawer)
+(ported from amarmesic/windows-phone-navigation-drawer)
+
+Navigation Drawer Layout for Windows Phone 8.0 
 ==============================================
 
 'One Drive like' Navigation Drawer Layout for Windows Phone 8.1.
