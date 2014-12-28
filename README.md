@@ -1,4 +1,4 @@
-Navigation Drawer Layout for Windows Phone 8.1
+Navigation Drawer Layout for Windows Phone 8.0 (ported from amarmesic/windows-phone-navigation-drawer)
 ==============================================
 
 'One Drive like' Navigation Drawer Layout for Windows Phone 8.1.
@@ -16,7 +16,7 @@ How to Use
 
 * In your MainPage.xaml, add a namespace
 ```sh
- xmlns:drawerLayout="using:DrawerLayout"
+ xmlns:drawerLayout="clr-namespace:DrawerLayout;assembly=DrawerLayout"
 ```
 
 * Replace the root Grid layout with the DrawerLayout
@@ -65,18 +65,6 @@ Drawer Layout raises two (self explanatory) events:
 1. DrawerOpened - raised when you swipe the drawer to the right or call OpenDrawer.
 
 2. DrawerClosed - raises when you swipe the drawer to the left or call CloseDrawer.
-
-### Demo & Tutorial
-
-Demo app on Windows Phone Store:
-[http://www.windowsphone.com/s?appid=d0264913-cfa2-4273-91c5-8372a5347084](http://www.windowsphone.com/s?appid=d0264913-cfa2-4273-91c5-8372a5347084 "Windows Phone Store Demo App")
-
-Tutorial available on [http://www.c-sharpcorner.com/UploadFile/cb386b/implementing-navigation-drawer-for-windows-phone-8-1/](http://www.c-sharpcorner.com/UploadFile/cb386b/implementing-navigation-drawer-for-windows-phone-8-1/ "C Sharp Corner")
-
-### NuGet
-
-Navigation Drawer Layout is also available as NuGet Package
-[https://www.nuget.org/packages/DrawerLayout/](https://www.nuget.org/packages/DrawerLayout/ "NuGet Package")
 
 Licence
 ----
