@@ -1,4 +1,4 @@
-(ported from amarmesic/windows-phone-navigation-drawer)
+(ported to Windows Phone 8.0 from https://github.com/amarmesic/windows-phone-navigation-drawer)
 
 Navigation Drawer Layout for Windows Phone 8.0 
 ==============================================
