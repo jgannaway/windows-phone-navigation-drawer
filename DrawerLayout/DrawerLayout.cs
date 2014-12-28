@@ -1,12 +1,9 @@
 ﻿using System;
 using System.Linq;
-using Windows.Foundation;
-using Windows.UI;
-using Windows.UI.Xaml;
-using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Media.Animation;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Media;
+using System.Windows.Media.Animation;
 
 namespace DrawerLayout
 {
@@ -53,7 +50,7 @@ namespace DrawerLayout
         {
             IsDrawerOpen = false;
         }
-   
+
         public void InitializeDrawerLayout()
         {
             if (Children == null) return;
@@ -82,13 +79,13 @@ namespace DrawerLayout
             // Render transform _listFragment
             _listFragment.HorizontalAlignment = HorizontalAlignment.Left;
             _listFragment.VerticalAlignment = VerticalAlignment.Stretch;
-            _listFragment.Width = (Window.Current.Bounds.Width/3)*2;
+            _listFragment.Width = (Application.Current.Host.Content.ActualWidth / 3) * 2;
             if (_listFragment.Background == null) _listFragment.Background = new SolidColorBrush(Color.FromArgb(255, 255, 255, 255));
 
-            var animatedTranslateTransform = new TranslateTransform {X = -_listFragment.Width, Y = 0};
+            var animatedTranslateTransform = new TranslateTransform { X = -_listFragment.Width, Y = 0 };
 
             _listFragment.RenderTransform = animatedTranslateTransform;
-            _listFragment.RenderTransformOrigin = new Point(0.5, 0.5);
+            _listFragment.RenderTransformOrigin = new System.Windows.Point(0.5, 0.5);
 
             _listFragment.UpdateLayout();
 
@@ -101,7 +98,7 @@ namespace DrawerLayout
                 VerticalAlignment = VerticalAlignment.Stretch,
                 Visibility = Visibility.Collapsed
             };
-            _shadowFragment.Tapped += shadowFragment_Tapped;
+            _shadowFragment.Tap += shadowFragment_Tapped;
             _shadowFragment.IsHitTestVisible = false;
 
             // Set ZIndexes
@@ -113,10 +110,10 @@ namespace DrawerLayout
             _fadeInStoryboard = new Storyboard();
 
             // New double animation
-            var doubleAnimation1 = new DoubleAnimation {Duration = new Duration(new TimeSpan(0, 0, 0, 0, 200)), To = 0};
+            var doubleAnimation1 = new DoubleAnimation { Duration = new Duration(new TimeSpan(0, 0, 0, 0, 200)), To = 0 };
 
             Storyboard.SetTarget(doubleAnimation1, _listFragment);
-            Storyboard.SetTargetProperty(doubleAnimation1, TranslatePath.Path);
+            Storyboard.SetTargetProperty(doubleAnimation1, TranslatePath);
             _fadeInStoryboard.Children.Add(doubleAnimation1);
 
             // New color animation for _shadowFragment
@@ -127,7 +124,7 @@ namespace DrawerLayout
             };
 
             Storyboard.SetTarget(colorAnimation1, _shadowFragment);
-            Storyboard.SetTargetProperty(colorAnimation1,ColorPath.Path);
+            Storyboard.SetTargetProperty(colorAnimation1, ColorPath);
             _fadeInStoryboard.Children.Add(colorAnimation1);
 
             // Create a new fadeOut animation storyboard
@@ -141,7 +138,7 @@ namespace DrawerLayout
             };
 
             Storyboard.SetTarget(doubleAnimation2, _listFragment);
-            Storyboard.SetTargetProperty(doubleAnimation2, TranslatePath.Path);
+            Storyboard.SetTargetProperty(doubleAnimation2, TranslatePath);
             _fadeOutStoryboard.Children.Add(doubleAnimation2);
 
             // New color animation for _shadowFragment
@@ -152,13 +149,13 @@ namespace DrawerLayout
             };
 
             Storyboard.SetTarget(colorAnimation2, _shadowFragment);
-            Storyboard.SetTargetProperty(colorAnimation2, ColorPath.Path);
+            Storyboard.SetTargetProperty(colorAnimation2, ColorPath);
             _fadeOutStoryboard.Children.Add(colorAnimation2);
 
-            _mainFragment.ManipulationMode = ManipulationModes.All;
+            //_mainFragment.ManipulationMode = ManipulationModes.All;
             _mainFragment.ManipulationStarted += mainFragment_ManipulationStarted;
 
-            _listFragment.ManipulationMode = ManipulationModes.All;
+            //_listFragment.ManipulationMode = ManipulationModes.All;
             _listFragment.ManipulationStarted += listFragment_ManipulationStarted;
 
         }
@@ -183,7 +180,7 @@ namespace DrawerLayout
             if (DrawerClosed != null)
                 DrawerClosed(this);
         }
-        private void shadowFragment_Tapped(object sender, TappedRoutedEventArgs e)
+        private void shadowFragment_Tapped(object sender, System.Windows.Input.GestureEventArgs e)
         {
             var shadow = new Storyboard();
 
@@ -194,7 +191,7 @@ namespace DrawerLayout
             };
 
             Storyboard.SetTarget(doubleAnimation, _listFragment);
-            Storyboard.SetTargetProperty(doubleAnimation, TranslatePath.Path);
+            Storyboard.SetTargetProperty(doubleAnimation, TranslatePath);
             shadow.Children.Add(doubleAnimation);
 
             var colorAnimation = new ColorAnimation
@@ -204,7 +201,7 @@ namespace DrawerLayout
             };
 
             Storyboard.SetTarget(colorAnimation, _shadowFragment);
-            Storyboard.SetTargetProperty(colorAnimation, ColorPath.Path);
+            Storyboard.SetTargetProperty(colorAnimation, ColorPath);
             shadow.Children.Add(colorAnimation);
 
             shadow.Completed += shadow_Completed;
@@ -234,13 +231,13 @@ namespace DrawerLayout
             };
 
             Storyboard.SetTarget(doubleAnimation, _listFragment);
-            Storyboard.SetTargetProperty(doubleAnimation, TranslatePath.Path);
+            Storyboard.SetTargetProperty(doubleAnimation, TranslatePath);
             s.Children.Add(doubleAnimation);
 
             var colorAnimation = new ColorAnimation { Duration = new Duration(new TimeSpan(0, 0, 0, 0, 200)), To = color };
 
             Storyboard.SetTarget(colorAnimation, _shadowFragment);
-            Storyboard.SetTargetProperty(colorAnimation, ColorPath.Path);
+            Storyboard.SetTargetProperty(colorAnimation, ColorPath);
             s.Children.Add(colorAnimation);
 
             s.Begin();
@@ -277,35 +274,35 @@ namespace DrawerLayout
 
         #region List Fragment manipulation events
 
-        private void listFragment_ManipulationStarted(object sender, ManipulationStartedRoutedEventArgs e)
+        private void listFragment_ManipulationStarted(object sender, System.Windows.Input.ManipulationStartedEventArgs e)
         {
             var listWidth = _listFragment.Width;
-            if (!(e.Position.X >= listWidth - 100) || !(e.Position.X < listWidth)) return;
+            if (!(e.ManipulationOrigin.X >= listWidth - 100) || !(e.ManipulationOrigin.X < listWidth)) return;
             _listFragment.ManipulationDelta += listFragment_ManipulationDelta;
             _listFragment.ManipulationCompleted += listFragment_ManipulationCompleted;
         }
-        private void listFragment_ManipulationDelta(object sender, ManipulationDeltaRoutedEventArgs e)
+        private void listFragment_ManipulationDelta(object sender, System.Windows.Input.ManipulationDeltaEventArgs e)
         {
-            if (Math.Abs(e.Cumulative.Translation.X) < 0) return;
-            if (e.Cumulative.Translation.X <= -_listFragment.Width)
+            if (Math.Abs(e.CumulativeManipulation.Translation.X) < 0) return;
+            if (e.CumulativeManipulation.Translation.X <= -_listFragment.Width)
             {
                 listFragment_ManipulationCompleted(this, null);
                 return;
             }
 
-            _listFragmentTransform.X = e.Cumulative.Translation.X;
+            _listFragmentTransform.X = e.CumulativeManipulation.Translation.X;
             _listFragment.RenderTransform = _listFragmentTransform;
-            MoveShadowFragment(e.Cumulative.Translation.X + _listFragment.Width);
+            MoveShadowFragment(e.CumulativeManipulation.Translation.X + _listFragment.Width);
         }
-        private void listFragment_ManipulationCompleted(object sender, ManipulationCompletedRoutedEventArgs e)
+        private void listFragment_ManipulationCompleted(object sender, System.Windows.Input.ManipulationCompletedEventArgs e)
         {
             // Get left of _listFragment
-            var transform = (TranslateTransform) _listFragment.RenderTransform;
+            var transform = (TranslateTransform)_listFragment.RenderTransform;
             if (transform == null) return;
             var left = transform.X;
 
             // Set snap divider to 1/3 of _mainFragment width
-            var snapLimit = _mainFragment.ActualWidth/3;
+            var snapLimit = _mainFragment.ActualWidth / 3;
 
             // Get init position of _listFragment
             const int initialPosition = 0;
@@ -324,7 +321,7 @@ namespace DrawerLayout
                 // raise DrawerClosed event
                 if (DrawerClosed != null) DrawerClosed(this);
             }
-                // else open drawer
+            // else open drawer
             else if (Math.Abs(initialPosition - left) < snapLimit)
             {
                 // move drawer to zero
@@ -344,37 +341,37 @@ namespace DrawerLayout
 
         #region Main fragment manipulation events
 
-        private void mainFragment_ManipulationStarted(object sender, ManipulationStartedRoutedEventArgs e)
+        private void mainFragment_ManipulationStarted(object sender, System.Windows.Input.ManipulationStartedEventArgs e)
         {
             // If the user has the first touch on the left side of canvas, that means he's trying to swipe the drawer
-            if (!(e.Position.X <= 40)) return;
+            if (!(e.ManipulationOrigin.X <= 40)) return;
 
             // Manipulation can be allowed
             _mainFragment.ManipulationDelta += mainFragment_ManipulationDelta;
             _mainFragment.ManipulationCompleted += mainFragment_ManipulationCompleted;
         }
-        private void mainFragment_ManipulationDelta(object sender, ManipulationDeltaRoutedEventArgs e)
+        private void mainFragment_ManipulationDelta(object sender, System.Windows.Input.ManipulationDeltaEventArgs e)
         {
-            if (Math.Abs(e.Cumulative.Translation.X) < 0) return;
-            if (e.Cumulative.Translation.X >= _listFragment.Width)
+            if (Math.Abs(e.CumulativeManipulation.Translation.X) < 0) return;
+            if (e.CumulativeManipulation.Translation.X >= _listFragment.Width)
             {
                 mainFragment_ManipulationCompleted(this, null);
                 return;
             }
 
-            _deltaTransform.X = -_listFragment.Width + e.Cumulative.Translation.X;
+            _deltaTransform.X = -_listFragment.Width + e.CumulativeManipulation.Translation.X;
             _listFragment.RenderTransform = _deltaTransform;
-            MoveShadowFragment(e.Cumulative.Translation.X);
+            MoveShadowFragment(e.CumulativeManipulation.Translation.X);
         }
-        private void mainFragment_ManipulationCompleted(object sender, ManipulationCompletedRoutedEventArgs e)
+        private void mainFragment_ManipulationCompleted(object sender, System.Windows.Input.ManipulationCompletedEventArgs e)
         {
             // Get left of _listFragment
-            var transform = (TranslateTransform) _listFragment.RenderTransform;
+            var transform = (TranslateTransform)_listFragment.RenderTransform;
             if (transform == null) return;
             var left = transform.X;
 
             // Set snap divider to 1/3 of _mainFragment width
-            var snapLimit = _mainFragment.ActualWidth/3;
+            var snapLimit = _mainFragment.ActualWidth / 3;
 
             // Get init position of _listFragment
             var initialPosition = -_listFragment.Width;
@@ -393,7 +390,7 @@ namespace DrawerLayout
                 // raise DrawerClosed event
                 if (DrawerClosed != null) DrawerClosed(this);
             }
-                // else open drawer
+            // else open drawer
             else if (Math.Abs(initialPosition - left) > snapLimit)
             {
                 // move drawer to zero
