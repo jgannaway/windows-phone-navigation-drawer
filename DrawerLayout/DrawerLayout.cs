@@ -211,6 +211,7 @@ namespace DrawerLayout
         {
             _shadowFragment.IsHitTestVisible = false;
             _shadowFragment.Visibility = Visibility.Collapsed;
+            IsDrawerOpen = false;
 
             // raise close event
             if (DrawerClosed != null) DrawerClosed(this);
@@ -218,6 +219,7 @@ namespace DrawerLayout
         private void fadeOutStoryboard_Completed(object sender, object e)
         {
             _shadowFragment.Visibility = Visibility.Collapsed;
+            IsDrawerOpen = false;
             if (DrawerClosed != null) DrawerClosed(this);
         }
         private void MoveListFragment(double left, Color color)
